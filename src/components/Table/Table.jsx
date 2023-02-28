@@ -2,8 +2,22 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../../context/PlanetsContext';
 
 export default function Table() {
-  const { planets, filtersPlanets } = useContext(PlanetsContext);
-
+  const { planets, filterByName, filters } = useContext(PlanetsContext);
+  const filterPlanets = () => planets.filter((planet) => {
+    if (filters.length) {
+      return filters.every((filter) => {
+        switch (filter.comparison) {
+        case 'maior que':
+          return Number(planet[filter.column]) > Number(filter.value);
+        case 'menor que':
+          return Number(planet[filter.column]) < Number(filter.value);
+        default:
+          return planet[filter.column] === filter.value;
+        }
+      });
+    }
+    return true;
+  });
   return (
     <table>
       <thead>
@@ -24,23 +38,26 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {(filtersPlanets.length !== 0 ? filtersPlanets : planets).map((planet) => (
-          <tr key={ planet.name }>
-            <td>{planet.name}</td>
-            <td>{planet.rotation_period}</td>
-            <td>{planet.orbital_period}</td>
-            <td>{planet.diameter}</td>
-            <td>{planet.climate}</td>
-            <td>{planet.gravity}</td>
-            <td>{planet.terrain}</td>
-            <td>{planet.surface_water}</td>
-            <td>{planet.population}</td>
-            <td>{planet.films}</td>
-            <td>{planet.created}</td>
-            <td>{planet.edited}</td>
-            <td>{planet.url}</td>
-          </tr>
-        ))}
+        { filterPlanets().filter(
+          (planet) => planet.name.toLowerCase().includes(filterByName.toLowerCase()),
+        )
+          .map((planet) => (
+            <tr key={ planet.name }>
+              <td>{planet.name}</td>
+              <td>{planet.rotation_period}</td>
+              <td>{planet.orbital_period}</td>
+              <td>{planet.diameter}</td>
+              <td>{planet.climate}</td>
+              <td>{planet.gravity}</td>
+              <td>{planet.terrain}</td>
+              <td>{planet.surface_water}</td>
+              <td>{planet.population}</td>
+              <td>{planet.films}</td>
+              <td>{planet.created}</td>
+              <td>{planet.edited}</td>
+              <td>{planet.url}</td>
+            </tr>
+          ))}
       </tbody>
     </table>
   );

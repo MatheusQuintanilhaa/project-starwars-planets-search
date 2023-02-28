@@ -1,28 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function SearchFilter() {
-  const [search, setSearch] = useState('');
-  const { planets, setFiltersPlanets } = useContext(PlanetsContext);
-  console.log(planets);
+  const { setFilterByName } = useContext(PlanetsContext);
   const handleChange = (e) => {
-    setSearch(e.target.value);
-    /* infos(e.target.value); */
+    setFilterByName(e.target.value);
   };
-
-  const infos = useCallback(() => {
-    if (search.length > 0) {
-      const filter = planets.filter((planet) => planet.name.toLowerCase()
-        .includes(search.toLocaleLowerCase()));
-      setFiltersPlanets(filter);
-      console.log(filter);
-    } else {
-      setFiltersPlanets(planets);
-    }
-  }, [search, planets, setFiltersPlanets]);
-  useEffect(() => {
-    infos();
-  }, [search, infos]);
 
   return (
     <div>
@@ -32,7 +15,7 @@ function SearchFilter() {
           name="search"
           type="text"
           id="search"
-          value={ search }
+          /* value={ filterByName } */
           onChange={ handleChange }
           data-testid="name-filter"
         />

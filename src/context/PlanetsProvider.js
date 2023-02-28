@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect, useMemo } from 'react';
 import PlanetsContext from './PlanetsContext';
 
 function StarWarsApi({ children }) {
+  const [filters, setFilters] = useState([]);
   const [planets, setPlanets] = useState([]);
-  const [filtersPlanets, setFiltersPlanets] = useState([]);
+  const [filterByName, setFilterByName] = useState('');
 
   useEffect(() => {
     // declare the data fetching function
@@ -20,11 +21,14 @@ function StarWarsApi({ children }) {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-  const context = {
+  const context = useMemo(() => ({
     planets,
-    setFiltersPlanets,
-    filtersPlanets,
-  };
+    setFilterByName,
+    filterByName,
+    filters,
+    setFilters,
+  }), [planets, setFilterByName, filterByName, filters, setFilters]);
+
   return (
     <PlanetsContext.Provider value={ context }>
       { children }
@@ -33,7 +37,7 @@ function StarWarsApi({ children }) {
 }
 
 StarWarsApi.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  children: PropTypes.any,
+}.isRequired;
 
 export default StarWarsApi;
