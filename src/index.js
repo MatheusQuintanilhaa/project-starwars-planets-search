@@ -7,6 +7,8 @@ ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
     <StarWarsApi>
+
       <App />
+
     </StarWarsApi>,
   );

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import context from './PlanetsContext';
+import PlanetsContext from './PlanetsContext';
 
 function StarWarsApi({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [filtersPlanets, setFiltersPlanets] = useState([]);
 
   useEffect(() => {
     // declare the data fetching function
@@ -19,11 +20,15 @@ function StarWarsApi({ children }) {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-
+  const context = {
+    planets,
+    setFiltersPlanets,
+    filtersPlanets,
+  };
   return (
-    <context.Provider value={ { planets } }>
+    <PlanetsContext.Provider value={ context }>
       { children }
-    </context.Provider>
+    </PlanetsContext.Provider>
   );
 }
 

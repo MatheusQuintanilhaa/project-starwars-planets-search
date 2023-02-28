@@ -1,11 +1,14 @@
 import React from 'react';
 import './App.css';
-import Table from './components/Table';
+import SearchFilter from './components/SearchFilter';
+import Table from './components/Table/Table';
 
 function App() {
   return (
-
-    <Table />
+    <div>
+      <SearchFilter />
+      <Table />
+    </div>
 
   );
 }
