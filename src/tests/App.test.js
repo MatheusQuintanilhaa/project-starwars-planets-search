@@ -2,7 +2,8 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import App from '../App';
 import userEvent from '@testing-library/user-event';
-import { MockData, MockData2 } from '../data/data'
+import { MockData } from '../data/MockData'
+import { MockData2 } from '../data/Mockdata2';
 import PlanetsProvider from '../context/PlanetsContext';
 
 
