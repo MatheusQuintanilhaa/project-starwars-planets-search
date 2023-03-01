@@ -23,6 +23,7 @@ function StarWarsApi({ children }) {
   }, []);
   const context = useMemo(() => ({
     planets,
+    setPlanets,
     setFilterByName,
     filterByName,
     filters,

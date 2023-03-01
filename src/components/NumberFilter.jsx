@@ -10,11 +10,13 @@ const INITIAL_COLUMNS = [
 ];
 
 function NumberFilter() {
-  const { filters, setFilters } = useContext(PlanetsContext);
-  const [column, setColumn] = useState('population');
+  const { filters, setFilters, planets, setPlanets } = useContext(PlanetsContext);
+  const [columns, setColumn] = useState('population');
 
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
+
+  const [order, setOrder] = useState({ column: 'population', sort: 'ASC' });
 
   /* const handleChange = useCallback(({ target: { name, value } }) => {
     setColumn(value);
@@ -23,9 +25,23 @@ function NumberFilter() {
     };
   }); */
 
+  const oderByFilter = () => {
+    const sorter = planets.sort((a, b) => {
+      const lastPosition = -1;
+      if (b[order.column] === 'unknown') return lastPosition;
+      if (order.sort === 'ASC') return Number(a[order.column]) - Number(b[order.column]);
+      if (order.sort === 'DESC') {
+        return Number(b[order.column]) - Number(a[order.column]);
+      }
+      return false;
+    });
+    const arr = [...sorter];
+    setPlanets(arr);
+  };
+
   const handleFilter = () => {
     const objects = {
-      column, comparison, value,
+      column: columns, comparison, value,
     };
     setFilters([...filters, objects]);
     setColumn('population');
@@ -43,7 +59,7 @@ function NumberFilter() {
       <select
         name="column"
         data-testid="column-filter"
-        value={ column }
+        value={ columns }
         onChange={ ({ target: { value: valor } }) => setColumn(valor) }
       >
         {
@@ -90,6 +106,52 @@ function NumberFilter() {
       >
         Remover Filtros
       </button>
+
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ oderByFilter }
+      >
+        Ordenar
+      </button>
+      <label htmlFor="">
+        Ascendent
+        <input
+          type="radio"
+          name="order"
+          data-testid="column-sort-input-asc"
+          value="ASC"
+          onChange={ ({ target: { value: valor } }) => {
+            setOrder({ ...order, sort: valor });
+          } }
+        />
+      </label>
+      <label htmlFor="">
+        Descendent
+        <input
+          type="radio"
+          name="order"
+          data-testid="column-sort-input-desc"
+          value="DESC"
+          onChange={ ({ target: { value: valor } }) => {
+            setOrder({ ...order, sort: valor });
+          } }
+        />
+      </label>
+
+      <select
+        name="column"
+        data-testid="column-sort"
+        value={ columns }
+        onChange={ ({ target: { value: valor } }) => setOrder(
+          { ...order, column: valor },
+        ) }
+      >
+        { INITIAL_COLUMNS.map((c) => (
+          <option key={ c } value={ c }>{c}</option>
+        )) }
+      </select>
+
     </form>
   );
 }
