@@ -3,7 +3,7 @@ import PlanetsContext from '../../context/PlanetsContext';
 
 export default function Table() {
   const { planets, filterByName, filters } = useContext(PlanetsContext);
-  const filterPlanets = () => planets.filter((planet) => {
+  const filterPlanets = () => planets?.filter((planet) => {
     if (filters.length) {
       return filters.every((filter) => {
         switch (filter.comparison) {
@@ -38,7 +38,7 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        { filterPlanets().filter(
+        { filterPlanets()?.filter(
           (planet) => planet.name.toLowerCase().includes(filterByName.toLowerCase()),
         )
           .map((planet) => (

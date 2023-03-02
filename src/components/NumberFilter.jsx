@@ -18,22 +18,12 @@ function NumberFilter() {
 
   const [order, setOrder] = useState({ column: 'population', sort: 'ASC' });
 
-  /* const handleChange = useCallback(({ target: { name, value } }) => {
-    setColumn(value);
-    const values = {
-      column: value,
-    };
-  }); */
-
   const oderByFilter = () => {
     const sorter = planets.sort((a, b) => {
       const lastPosition = -1;
       if (b[order.column] === 'unknown') return lastPosition;
       if (order.sort === 'ASC') return Number(a[order.column]) - Number(b[order.column]);
-      if (order.sort === 'DESC') {
-        return Number(b[order.column]) - Number(a[order.column]);
-      }
-      return false;
+      return Number(b[order.column]) - Number(a[order.column]);
     });
     const arr = [...sorter];
     setPlanets(arr);

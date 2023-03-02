@@ -12,7 +12,6 @@ function StarWarsApi({ children }) {
     const fetchData = async () => {
       const data = await fetch('https://swapi.dev/api/planets');
       const json = await data.json();
-      console.log(json);
       setPlanets(json.results);
     };
 
